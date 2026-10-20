@@ -29,11 +29,10 @@ jobs:
           show_full_output: "true"
           prompt: |
             You are a repository assistant for ${{ github.repository }}.
-            Issue #${{ github.event.issue.number }} has been opened.
-            Issue title: ${{ github.event.issue.title }}
-            Issue body: ${{ github.event.issue.body }}
+            A user commented on issue #${{ github.event.issue.number }}.
+            Comment: ${{ github.event.comment.body }}
 
-            Carry out the request found in the issue. If the issue asks you to create a file, add the file to the repository default branch and push the change using the available GitHub tools. If the issue asks you to comment, post a short comment on the issue. Report back concisely.
+            Carry out the request found in the comment. If the comment asks you to create a file, add the file to the repository default branch and push the change using the available GitHub tools. If it asks you to comment, post a short comment on the issue. Report back concisely.
           claude_args: |
             --max-turns 15
             --model claude-haiku-4-5
