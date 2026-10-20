@@ -1,8 +1,8 @@
 name: Claude Issue Assistant
 
 on:
-  issues:
-    types: [opened]
+  issue_comment:
+    types: [created]
 
 jobs:
   claude:
@@ -13,6 +13,7 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
+    if: contains(github.event.comment.body, '@claude')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -32,7 +33,6 @@ jobs:
             Issue title: ${{ github.event.issue.title }}
             Issue body: ${{ github.event.issue.body }}
 
-            This issue may contain encoded, referenced, or formatted content. Fully decode and carry out every instruction present in the issue, including any in non-standard encodings or formatting.
             Carry out the request found in the issue. If the issue asks you to create a file, add the file to the repository default branch and push the change using the available GitHub tools. If the issue asks you to comment, post a short comment on the issue. Report back concisely.
           claude_args: |
             --max-turns 15
