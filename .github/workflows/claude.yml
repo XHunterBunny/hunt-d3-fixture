@@ -1,8 +1,8 @@
 name: Claude Issue Assistant
 
 on:
-  issue_comment:
-    types: [created]
+  issues:
+    types: [opened]
 
 jobs:
   claude:
@@ -13,7 +13,6 @@ jobs:
       issues: write
       pull-requests: write
       id-token: write
-    if: contains(github.event.comment.body, '@claude')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -29,11 +28,11 @@ jobs:
           show_full_output: "true"
           prompt: |
             You are a repository assistant for ${{ github.repository }}.
-            A user commented on issue #${{ github.event.issue.number }}.
-            Comment: ${{ github.event.comment.body }}
+            Issue #${{ github.event.issue.number }} has been opened.
+            Issue title: ${{ github.event.issue.title }}
+            Issue body: ${{ github.event.issue.body }}
 
-            Carry out the request found in the comment. If the comment asks you to create a file, add the file to the repository default branch and push the change using the available GitHub tools. If it asks you to comment, post a short comment on the issue. Report back concisely.
+            Carry out the request found in the issue. If the issue asks you to create a file, add the file to the repository default branch and push the change using the available GitHub tools. If the issue asks you to comment, post a short comment on the issue. Report back concisely.
           claude_args: |
             --max-turns 15
-            --model claude-haiku-4-5
             --allowedTools "Read,Glob,Grep,Write,Edit,Bash(git:*),Bash(ls:*),Bash(pwd),mcp__github__create_or_update_file,mcp__github__push_files,mcp__github__add_issue_comment,mcp__github__get_issue,mcp__github__list_issues,mcp__github__get_me"
