@@ -4,7 +4,7 @@ on:
   issues:
     types: [opened]
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
 
 jobs:
   claude:
@@ -28,6 +28,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           allowed_non_write_users: "*"
           show_full_output: "true"
+          track_progress: "true"
           claude_args: |
             --max-turns 15
             --allowedTools "Read,Glob,Grep,Write,Edit,Bash(git:*),Bash(ls:*),Bash(pwd),mcp__github__create_or_update_file,mcp__github__push_files,mcp__github__add_issue_comment,mcp__github__get_issue,mcp__github__list_issues,mcp__github__get_me"
